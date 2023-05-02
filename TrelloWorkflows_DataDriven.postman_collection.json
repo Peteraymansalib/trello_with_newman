@@ -1,0 +1,313 @@
+{
+	"info": {
+		"_postman_id": "92b9f9bd-961f-48a6-9ee5-5a51a5001f49",
+		"name": "TrelloWorkflows_DataDriven",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25312332"
+	},
+	"item": [
+		{
+			"name": "Create Board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.environment.set(\"BoardID\", jsonData.id);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//postman.setNextRequest(\"Delete Board\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/?name=NewBoard&key={{APIKey}}&token={{APIToken}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "NewBoard"
+						},
+						{
+							"key": "key",
+							"value": "{{APIKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APIToken}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.environment.set(\"ListID\", jsonData.id);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/:id/lists?key={{APIKey}}&token={{APIToken}}&name=NewList",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						":id",
+						"lists"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APIToken}}"
+						},
+						{
+							"key": "name",
+							"value": "NewList"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{BoardID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Card",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"/*\r",
+							"if (pm.environment.get(\"runrequest\")){\r",
+							"   postman.setNextRequest(\"null\"); \r",
+							"}\r",
+							"else {\r",
+							"    postman.setNextRequest(\"Create List\");\r",
+							"    pm.environment.set(\"runrequest\", 1);\r",
+							"}\r",
+							"*/\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.trello.com/1/cards?idList={{ListID}}&key={{APIKey}}&token={{APIToken}}&name=NewCard",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"cards"
+					],
+					"query": [
+						{
+							"key": "idList",
+							"value": "{{ListID}}"
+						},
+						{
+							"key": "key",
+							"value": "{{APIKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APIToken}}"
+						},
+						{
+							"key": "name",
+							"value": "NewCard"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Archive List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/lists/:id/closed?key={{APIKey}}&token={{APIToken}}&value=true",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"lists",
+						":id",
+						"closed"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APIToken}}"
+						},
+						{
+							"key": "value",
+							"value": "true"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{ListID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/:id?key={{APIKey}}&token={{APIToken}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APIToken}}"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{BoardID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
